@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/beans   
+    http://www.springframework.org/schema/beans/spring-beans-4.3.xsd   
+    http://www.springframework.org/schema/context   
+    http://www.springframework.org/schema/context/spring-context-4.3.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+    http://www.springframework.org/schema/task 
+       http://www.springframework.org/schema/task/spring-task.xsd"
+	default-autowire="byName">
+	
+	<mvc:annotation-driven> <!-- 在这里使用了自定义的json返回 ，在这里由默认的jackson , 改成了fastjson -->
+        <mvc:message-converters register-defaults="true">
+            <ref bean="stringHttpMessageConverter" />  
+            <ref bean="fastJsonHttpMessageConverter" />  
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+    
+    <bean id="stringHttpMessageConverter"  
+        class="org.springframework.http.converter.StringHttpMessageConverter">  
+        <constructor-arg value="UTF-8" index="0"></constructor-arg>
+        <property name="supportedMediaTypes">  
+            <list>  
+                <value>text/plain;charset=UTF-8</value>  
+            </list>  
+        </property>  
+    </bean>
+    <!-- 使用alibaba的fastjson -->
+    <bean id="fastJsonHttpMessageConverter" class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter4">
+        <property name="supportedMediaTypes">
+            <list>
+                <value>text/html;charset=UTF-8</value>
+                <value>application/json;charset=UTF-8</value> 
+            </list>
+        </property>
+        <property name="fastJsonConfig">
+        	<bean class="com.alibaba.fastjson.support.config.FastJsonConfig">
+        		<property name="features">
+	        		<list>
+		                <value>AllowArbitraryCommas</value>
+		                <value>AllowUnQuotedFieldNames</value>
+		                <value>DisableCircularReferenceDetect</value>
+		            </list>
+        		</property>
+        		<property name="dateFormat" value="yyyy-MM-dd HH:mm:ss"></property>
+        		<!-- 配置json返回 -->
+        		<property name="serializerFeatures">  
+                    <array>
+                        <value>WriteMapNullValue</value>
+                    </array>
+                </property>
+        	</bean>
+        </property>
+    </bean>
+
+	
+	<!-- 只扫描@Controller dkz加注，这里是springmcv管控controller，只能让其扫描控制层，如过同时扫了由spring管控的service，那么配置的事务会失效-->
+	<context:component-scan base-package="com.soket.web.controller"
+		use-default-filters="false">
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	<!--开启切面代理 使得spring认识 @Aspect -->
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+	
+	<!-- 静态资源访问，(不对静态资源如CSS、JS、HTML等进行拦截) -->
+	<mvc:default-servlet-handler />
+	<bean name="beetlConfig" class="org.beetl.ext.spring.BeetlGroupUtilConfiguration"
+		init-method="init">
+		<property name="configFileResource" value="classpath:/properties/beetl.properties" />
+	</bean>
+	
+	<!-- Beetl视图解析器-->
+	<bean name="beetlViewResolver" class="org.beetl.ext.spring.BeetlSpringViewResolver">
+   <!-- 多视图解析器，需要设置viewNames和order -->
+        <property name="contentType" value="text/html;charset=UTF-8"/>
+        <property name="order" value="0"/>
+        <!-- 多GroupTemplate，需要指定使用的bean -->
+        <property name="config" ref="beetlConfig"/>
+			
+	</bean>
+	<!-- JSP视图解析器 -->
+	<bean name="JSPViewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!-- 注意JSP的这个视图解析器order必须在最后 -->
+		<property name="order" value="256" />
+		<!-- beetl配置不支持前缀，这不同于jsp 和 freemaker -->
+		<property name="prefix" value="/WEB-INF/" />
+		<property name="suffix" value=".jsp" />
+		<property name="contentType" value="text/html;charset=UTF-8" />
+	</bean>
+	
+	
+      
+   
+ 	
+</beans>

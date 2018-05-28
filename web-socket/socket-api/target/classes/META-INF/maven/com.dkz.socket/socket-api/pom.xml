@@ -1,0 +1,41 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.dkz.socket</groupId>
+    <artifactId>web-socket</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>socket-api</artifactId>
+  <properties>
+		<skipTests>true</skipTests>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<cloud.version>1.0.0</cloud.version>
+	</properties>
+  <!-- 依赖coco -->
+  	<dependencies>
+        <dependency>
+            <groupId>com.ext.cloud</groupId>
+            <artifactId>cloud.core</artifactId>
+            <version>${cloud.version}</version>
+             <!-- <scope>system</scope> 
+       		<systemPath>${basedir}/lib/cloud-core.jar</systemPath> -->
+        </dependency>
+  	</dependencies>
+		
+  <build>
+        <finalName>socket-api</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <showWarnings>true</showWarnings>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+  
+</project>

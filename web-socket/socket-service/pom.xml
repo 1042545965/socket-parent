@@ -1,0 +1,111 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.dkz.socket</groupId>
+    <artifactId>web-socket</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>socket-service</artifactId>
+  
+  <!-- 项目属性 -->
+	<properties>
+		<skipTests>true</skipTests>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<servlet.version>3.0.1</servlet.version>
+		<fastjson.version>1.2.37</fastjson.version>
+		<cloud.version>1.0.0</cloud.version>
+		<socket.version>0.0.1-SNAPSHOT</socket.version>
+		<spring_version>4.3.10.RELEASE</spring_version>
+	</properties>
+	<dependencies>
+	     <dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${servlet.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- fastjson json -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>${fastjson.version}</version>
+		</dependency>
+		
+		<!-- 自带的api包 -->
+		<dependency>
+			<groupId>com.dkz.socket</groupId>
+			<artifactId>socket-api</artifactId>
+			<version>${socket.version}</version>
+		</dependency>
+		
+		<!-- 依赖自带的utils -->
+		<dependency>
+			<groupId>com.dkz.socket</groupId>
+			<artifactId>project-utils</artifactId>
+			<version>${socket.version}</version>
+		</dependency>
+		
+		<!-- 依赖coco -->
+		<dependency>
+            <groupId>com.ext.cloud</groupId>
+            <artifactId>cloud.cache</artifactId>
+            <version>${cloud.version}</version>
+          <!--    <scope>system</scope> system，类似provided，需要显式提供依赖的jar以后，Maven就不会在Repository中查找它
+       		<systemPath>${basedir}/lib/cloud-cache.jar</systemPath> -->
+        </dependency>
+        
+        
+        <dependency>
+            <groupId>com.ext.cloud</groupId>
+            <artifactId>cloud.jdbc</artifactId>
+            <version>${cloud.version}</version>
+           <!--  <scope>system</scope> 
+       		<systemPath>${basedir}/lib/cloud-jdbc.jar</systemPath> -->
+        </dependency>
+		
+		<!-- spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring_version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${spring_version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring_version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring_version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aspects</artifactId>
+			<version>${spring_version}</version>
+		</dependency>
+		
+	</dependencies>
+	
+	<build>
+        <finalName>socket-service</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <showWarnings>true</showWarnings>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+  
+</project>
