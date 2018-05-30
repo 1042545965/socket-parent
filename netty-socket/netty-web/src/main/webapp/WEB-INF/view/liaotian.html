@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>netty-socket</title>
+    <link href="${ctxPath}/res/css/liaotian.css" rel="stylesheet">
+    <script type="text/javascript"> 
+   
+    
+    
+    
+        window.onload = function(){
+        	
+        	 var Words = document.getElementById("words");
+        	    
+        	    var socket = new WebSocket('ws://127.0.0.1/7397'); 
+        	    //创建Socket 
+        	    socket.onopen = function(event) { 
+
+        	      //向服务器发送数据，通过这个方法进行登陆，这样就能发送数据到指定用户了
+        	      debugger;
+        	      var date={"id":"${userId}","type":"aa"};
+      			   var login = JSON.stringify(date);
+        	      socket.send(login); 
+
+        	      //接收数据事件
+        	      socket.onmessage = function(event) {
+        	    	  var str = '<div class="atalk"><span>收到的：' + event.data +'</span></div>';
+        	    	  Words.innerHTML = Words.innerHTML + str ;
+        	      }; 
+
+        	      // socket关闭事件
+        	      socket.onclose = function(event) {	
+        	        body.innerHTML+="<br/>系统：已和服务器断开连接！！！";
+        	      }; 
+
+        	      //关闭socket
+        	      //socket.close()
+        	    };
+        	
+        	
+        	var Who = document.getElementById("who");
+            var TalkWords = document.getElementById("talkwords");
+            var TalkSub = document.getElementById("talksub");
+            TalkSub.onclick = function(){
+                //定义空字符串
+                var str = "";
+                if(TalkWords.value == ""){
+                     // 消息为空时弹窗
+                    alert("消息不能为空");
+                    return;
+                }
+                var str = '<div class="btalk"><span>我发的 :' + TalkWords.value +'</span></div>'
+                Words.innerHTML = Words.innerHTML + str ;
+                //提交发送消息
+                var userId = $("#send_user").val();
+                getSelectData('${ctxPath}/message/nettymessage' , {"userId":userId , "message":TalkWords.value})
+            }
+        }
+
+        function getSelectData(selectUrl, param) {
+            var mydata;
+            $.ajax({
+                type: "POST",
+                async: false,
+                url: selectUrl,
+                data: param,
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                success: function (data) {
+                    mydata = data;
+                },
+                dataType: "json"
+            });
+            return mydata;
+        }
+    </script>
+</head>
+<body>
+	<div>
+		<select id="send_user">
+			<option>选择需要发送消息的人</option>
+			<option value="11">发送11</option>
+			<option value="22">发送22</option>
+			<option value="33">发送33</option>
+		</select>
+	</div>
+	
+    <div class="talk_con">
+        <div class="talk_show" id="words">
+            <div class="atalk"><span id="asay">A说：吃饭了吗？</span></div>
+            <div class="btalk"><span id="bsay">B说：还没呢，你呢？</span></div>
+        </div>
+        <div class="talk_input">
+            <select class="whotalk" id="who">
+                <option value="0">A说：</option>
+                <option value="1">B说：</option>
+            </select>
+            <input type="text" class="talk_word" id="talkwords">
+            <input type="button" value="发送" class="talk_sub" id="talksub">
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="${ctxPath}/res/js/jquery.min.js"></script>
+</html>

@@ -1,4 +1,5 @@
 https://www.cnblogs.com/aiyoubucuoo/archive/2016/05/04/5457396.html //eclipce githup
 https://blog.csdn.net/jone_lu/article/details/44656773 //github的绝世好文啊
+https://blog.csdn.net/tingzhiyi/article/details/76101031 //github跟新项目遇到的问题
 
 https://www.cnblogs.com/ggwow/p/7994213.html //netty websocket
