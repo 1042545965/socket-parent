@@ -28,7 +28,7 @@
     <bean id="serverBootstrap" class="io.netty.bootstrap.ServerBootstrap"></bean>
     <bean id="webSocketServer" class="com.soket.netty.server.WebSocketServer">
         <property name="port" value="${websocket.server.port}"></property>
-        <property name="childChannelHandler" ref="webSocketServerHandler" />
+        <!-- <property name="childChannelHandler" ref="webSocketServerHandler" /> -->
     </bean>
 
 </beans>

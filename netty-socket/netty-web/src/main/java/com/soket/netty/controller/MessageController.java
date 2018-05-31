@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.soket.netty.server.BaseWebSocketServerHandler;
 
 
 
@@ -15,20 +14,21 @@ import com.soket.netty.server.BaseWebSocketServerHandler;
 @RequestMapping("/message")
 public class MessageController{
 
-	@Autowired
-	private BaseWebSocketServerHandler baseWebSocketServerHandler;
+//	@Autowired
+//	private BaseWebSocketServerHandler baseWebSocketServerHandler;
   //请求入口
     @RequestMapping(value="/nettymessage",method=RequestMethod.POST)
     @ResponseBody
     public String nettyMessage(@RequestParam(value="userId",required=true) String userId,
         @RequestParam(value="message",required=true) String message){
+			return message;
     	//
-    	try {
-    		BaseWebSocketServerHandler.pushOne(userId, message);
-    		return "发送成功";
-		} catch (Exception e) {
-			return "发送失败";
-		}
+//    	try {
+//    		BaseWebSocketServerHandler.pushOne(userId, message);
+//    		return "发送成功";
+//		} catch (Exception e) {
+//			return "发送失败";
+//		}
     	
 			
     }

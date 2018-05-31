@@ -2,24 +2,33 @@ package com.soket.netty.server;
 
 import javax.annotation.PreDestroy;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+
 
 import com.soket.netty.init.AfterSpringBegin;
 
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.FixedRecvByteBufAllocator;
+import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.http.HttpObjectAggregator;
+import io.netty.handler.codec.http.HttpServerCodec;
+import io.netty.handler.stream.ChunkedWriteHandler;
 
 /**
  * 启动服务
  * */
 
 public class WebSocketServer extends AfterSpringBegin{
-
+	private static final Logger LOG = Logger.getLogger(WebSocketServer.class);
     //用于客户端连接请求
     @Autowired
     private EventLoopGroup bossGroup;
@@ -41,7 +50,6 @@ public class WebSocketServer extends AfterSpringBegin{
     private int port ;
     
     public WebSocketServer(){
-    	run();
     	System.err.println("初始化");
     }
 
@@ -97,7 +105,7 @@ public class WebSocketServer extends AfterSpringBegin{
     public void run() {
         // TODO Auto-generated method stub
         try {
-            System.err.println("===============port==>"+port+"====================");
+            System.out.println("===============port==>"+port+"====================");
         	bulid(port);
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -105,7 +113,7 @@ public class WebSocketServer extends AfterSpringBegin{
         }
     }
     
-    public void bulid(int port) throws Exception{
+   /* public void bulid(int port) throws Exception{
         
         try {
             
@@ -124,7 +132,7 @@ public class WebSocketServer extends AfterSpringBegin{
                            .childOption(ChannelOption.RCVBUF_ALLOCATOR, new FixedRecvByteBufAllocator(592048))
                            .childHandler(childChannelHandler);
             
-            System.err.println("===成功===");
+            System.out.println("===成功===");
             channelFuture = serverBootstrap.bind(port).sync();
             channelFuture.channel().closeFuture().sync();
         } catch (Exception e) {
@@ -134,7 +142,34 @@ public class WebSocketServer extends AfterSpringBegin{
             
         }
 
-    }
+    }*/
+    
+	public void bulid(int port) throws Exception{
+
+//		EventLoopGroup bossGroup = new NioEventLoopGroup();
+//		EventLoopGroup workerGroup = new NioEventLoopGroup();
+		try {
+			ServerBootstrap b = new ServerBootstrap();
+			b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class).childHandler(new ChannelInitializer<Channel>() {
+
+				@Override
+				protected void initChannel(Channel channel) throws Exception {
+					ChannelPipeline pipeline = channel.pipeline();
+					pipeline.addLast("http-codec", new HttpServerCodec()); // Http消息编码解码
+					pipeline.addLast("aggregator", new HttpObjectAggregator(65536)); // Http消息组装
+					pipeline.addLast("http-chunked", new ChunkedWriteHandler()); // WebSocket通信支持
+					pipeline.addLast("handler", new BananaWebSocketServerHandler()); // WebSocket服务端Handler
+				}
+			});
+			
+			Channel channel = b.bind(port).sync().channel();
+			LOG.info("WebSocket 已经启动，端口：" + port + ".");
+			channel.closeFuture().sync();
+		} finally {
+			bossGroup.shutdownGracefully();
+			workerGroup.shutdownGracefully();
+		}
+	}
     
     //执行之后关闭
     @PreDestroy

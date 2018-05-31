@@ -15,31 +15,34 @@
         	
         	 var Words = document.getElementById("words");
         	    
-        	    var socket = new WebSocket('ws://127.0.0.1/7397'); 
+        	    var socket = new WebSocket('ws://localhost:8888'); 
         	    //创建Socket 
         	    socket.onopen = function(event) { 
-
+        	    	console.log("ssss");
         	      //向服务器发送数据，通过这个方法进行登陆，这样就能发送数据到指定用户了
         	      debugger;
         	      var date={"id":"${userId}","type":"aa"};
       			   var login = JSON.stringify(date);
         	      socket.send(login); 
 
-        	      //接收数据事件
-        	      socket.onmessage = function(event) {
-        	    	  var str = '<div class="atalk"><span>收到的：' + event.data +'</span></div>';
-        	    	  Words.innerHTML = Words.innerHTML + str ;
-        	      }; 
-
-        	      // socket关闭事件
-        	      socket.onclose = function(event) {	
-        	        body.innerHTML+="<br/>系统：已和服务器断开连接！！！";
-        	      }; 
+        	
 
         	      //关闭socket
         	      //socket.close()
         	    };
-        	
+        	    
+        	    //接收数据事件
+      	      socket.onmessage = function(event) {
+      	    		alert("1111");
+      	    	  var str = '<div class="atalk"><span>收到的：' + event.data +'</span></div>';
+      	    	  Words.innerHTML = Words.innerHTML + str ;
+      	      }; 
+
+      	      // socket关闭事件
+      	      socket.onclose = function(event) {	
+      	    	  alert("11112");
+      	    	  document.body.innerHTML+="<br/>系统：已和服务器断开连接！！！";
+      	      }; 
         	
         	var Who = document.getElementById("who");
             var TalkWords = document.getElementById("talkwords");
