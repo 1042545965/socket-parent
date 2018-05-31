@@ -34,7 +34,7 @@ public class DemoController extends CoCoController{
 	@RequestMapping(value="/todemo/{userId}")
 	public String demoString(@PathVariable String userId , Model model){
 		model.addAttribute("userId",userId);
-		return "liaotian.html";
+		return "nettysocket/banana.html";
 	}
 	
 	@RequestMapping(value="/demolist")

@@ -42,6 +42,10 @@ public class BananaWebSocketServerHandler extends SimpleChannelInboundHandler<Ob
 	private ChannelHandlerContext ctx;
 	private String sessionId;
 
+	/* (non-Javadoc)
+	 * @see io.netty.channel.SimpleChannelInboundHandler#messageReceived(io.netty.channel.ChannelHandlerContext, java.lang.Object)
+	 * websocket 的send方法会调用该方法 ， 第一次连接的时候也会调用该方法 ， 第一次请求使用的是Http
+	 */
 	@Override
 	public void messageReceived(ChannelHandlerContext ctx, Object msg) throws Exception {
 		if (msg instanceof FullHttpRequest) { // 传统的HTTP接入

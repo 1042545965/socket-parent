@@ -8,5 +8,6 @@
   	<module>project-utils</module>
   	<module>web-socket</module>
   	<module>netty-socket</module>
+  	<module>project-model</module>
   </modules>
 </project>
