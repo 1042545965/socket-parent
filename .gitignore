@@ -4,11 +4,9 @@ target/
 .classpath
 .project
 .idea/
-/target
 test-output/
 /test-output
 *.iml
 *.log
 *.log.*
 log/
-/netty-socket/
