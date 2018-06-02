@@ -3,3 +3,31 @@ https://blog.csdn.net/jone_lu/article/details/44656773 //github的绝世好文�
 https://blog.csdn.net/tingzhiyi/article/details/76101031 //github跟新项目遇到的问题
 
 https://www.cnblogs.com/ggwow/p/7994213.html //netty websocket
+
+关于socket的记录
+  socket是应用层（也就是用户）和tcp/ip协议族通信的软件抽象层，他是一组接口
+  socket三次握手简历连接，四次挥手释放连接
+netty：
+    基于nio的客户端服务端的编程框架
+    
+netty的使用场景
+	1:高性能游戏领域
+	2:多线程并发领域
+	3：异步通信领域
+
+首先是io通信模块
+	bio通信
+		一个线程负责连接
+		一请求一应答
+		缺乏弹性应答能力
+		问题：并发增大时，出现内存溢出
+	伪异步io通信（和bio最大的不同点是不会每一个连接建立一个线程，而是由线程池进行管理）
+		线程池负责连接
+		当客户端有m个请求是，客户端会建立一个有n个线程的线程池进行连接(应为有线程池，所以并发是可控的。不会出现高并发产生的宕机事件)
+		并发的不断增加，伪异步io通信可能会造成线程池阻塞	
+	nio通信
+		缓冲区buffer（所有数据都是用缓冲去处理的）
+		通道channel（通道是双向的，可以读也可以写）
+		nio的多路复用器selector（他会轮询channel，有channel在进行读写的时候就会被他轮询出来，通过key）
+		没有最大连接数的限制，可以接入成千上万个用户
+	aio通信
