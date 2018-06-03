@@ -93,6 +93,7 @@ public class BananaWebSocketServerHandler extends SimpleChannelInboundHandler<Ob
 		}
 
 		// 正常WebSocket的Http连接请求，构造握手响应返回
+		//"ws://" + request.headers().get(HttpHeaders.Names.HOST) 这一串就是我在前端写请求的
 		WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory("ws://" + request.headers().get(HttpHeaders.Names.HOST), null, false);
 		handshaker = wsFactory.newHandshaker(request);
 		if (handshaker == null) { // 无法处理的websocket版本

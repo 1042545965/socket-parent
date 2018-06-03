@@ -44,6 +44,7 @@
 			<socket.version>0.0.1-SNAPSHOT</socket.version>
 			<netty.version>0.0.1-SNAPSHOT</netty.version>
 			<nettyall.version>4.1.24.Final</nettyall.version>
+			<nettyall.version>5.0.0.Alpha1</nettyall.version> 
     </properties>
   
   	<dependencies>
@@ -222,6 +223,12 @@
    			 <artifactId>bcprov-jdk16</artifactId>
    			 <version>1.45</version>
 		</dependency>
+		<!-- netty 核心包 -->
+		<!-- <dependency>
+		    <groupId>io.netty</groupId>
+		    <artifactId>netty-all</artifactId>
+		    <version>${nettyall.version}</version>
+		</dependency> -->
 		
 		
    </dependencies>
