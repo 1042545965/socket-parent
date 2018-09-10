@@ -24,7 +24,7 @@ $(document).ready(function() {
 		window.WebSocket = window.MozWebSocket;
 	}
 	if (window.WebSocket) {
-		socket = new WebSocket("ws://localhost:7397/");
+		socket = new WebSocket("ws://192.168.1.83:7397/");
 		socket.onmessage = function(event) {
 			console.log("收到服务器消息:" + event.data);
 			if (event.data.indexOf("isSucc") != -1) {// 这里需要判断是客户端请求服务端返回后的消息（response）
@@ -142,9 +142,9 @@ $(document).ready(function() {
 	        alert("请输入您的聊天信息");
 		    return;
 	    }
-	    getSelectData('127.0.0.1:8080/netty-web/message/nettymessage' , {"userId":"22" , "message":message})
+	    //getSelectData('127.0.0.1:8080/netty-web/message/nettymessage' , {"userId":"22" , "message":message})
 		// 发送聊天消息
-		//send(JSON.stringify({"requestId":uuid, "serviceId":1002, "name":nameOnline, "message":message}));
+		send(JSON.stringify({"requestId":uuid, "serviceId":1002, "name":nameOnline, "message":message}));
 		$("#messageInput").val("");
 	});
 	

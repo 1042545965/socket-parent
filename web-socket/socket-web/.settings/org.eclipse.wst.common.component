@@ -10,16 +10,7 @@
         <dependent-module archiveName="socket-api-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/socket-api/socket-api">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="cloud.core-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/cloud.core/cloud.core">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="project-utils-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/project-utils/project-utils">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="cloud.cache-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/cloud.cache/cloud.cache">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="cloud.jdbc-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/cloud.jdbc/cloud.jdbc">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="java-output-path" value="/socket-web/target/classes"/>

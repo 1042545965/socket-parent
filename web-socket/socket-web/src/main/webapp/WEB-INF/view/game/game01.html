@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>this is bcy game</title>
+<link href="${ctxPath}/res/plugin/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+ <script src="${ctxPath}/res/plugin/jquery/jquery.min.js"></script>
+  <script src="${ctxPath}/res/plugin/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div class="container">
+	<div class="row clearfix" style="margin-top: 15%">
+		<div class="col-md-4 column">
+		</div>
+		<div class="col-md-4 column">
+			<div class="londing">
+				<h2>正在匹配当中..............</h2>
+			</div>
+			<div>
+			<button type="button" class="btn btn-default">0</button><span>本人id</span><span id="myuser">${userId}</span>
+			<button type="button" class="btn btn-primary" style="margin-left: 53%">0</button><span>对方id</span><span id="sheuser"></span>
+			</div>
+			<dl>
+				<dt>
+					看到题目请答题
+				</dt>
+				<dd>
+					推翻秦朝统治的决定性战役是
+				</dd>
+			</dl>
+			<button type="button" class="btn btn-block btn-primary" onclick="selectkey('false' , 'A')">A、牧野之战 </button> 
+			<button type="button" class="btn btn-primary btn-block" onclick="selectkey('false' , 'B')">B、长平之战 </button> 
+			<button type="button" class="btn btn-primary btn-block" onclick="selectkey('true' , 'C')">C、巨鹿之战 </button>
+		</div>
+		<div class="col-md-4 column">
+		<button id="close" type="button" class="btn btn-primary btn-block" >点击关闭 </button>
+		</div>
+	</div>
+</div>
+
+	<script type="text/javascript">
+    	var wsurl = 'ws://192.168.1.85:8080/${ctxPath}/websocketDemo/${userId}';
+    	 var socket ; 
+   	    var flagclose = true;
+   	     socket = new WebSocket(wsurl); 
+   	    function init() {
+   	     //创建Socket 
+   	   	    socket.onopen = function(event) { 
+   	   	    	heartCheck.reset();
+   	   	 	}; 
+   	   	      //向服务器发送数据
+   	   	      //socket.send('哈哈哈哈'); 
+
+   	   	      //接收数据事件
+   	   	      socket.onmessage = function(event) {
+   	   	    	heartCheck.reset();
+   	   	    	  //系统匹配成功发送消息 , 这个时候要获取对方的userid
+   	   	    	  var str = event.data;
+   	   	    	  var obj = JSON.parse(str);
+   	   	    	  if (obj.falg) {//如果是匹配成功消息
+   	   	    		//隐藏等待图标
+   	   	   			$(".londing").hide();
+   	   	    	  	//给对方图标设置消息
+   	   	   			$("#sheuser").html(obj.teamid);
+   				}
+   	   	    	 if (obj.select) { //这是答题传过来的消息
+   	   	    		 alert("对方选择答案:"+obj.selkey + "   对方得分"+obj.sum + "  对方id是:"+obj.senduserid)
+   				}
+   	   	    	 
+   	   	    	  
+   	   	    	  //var str = '<div class="atalk"><span>收到的：' + event.data +'</span></div>';
+   	   	    	  //Words.innerHTML = Words.innerHTML + str ;
+   	   	      }; 
+
+   	   	      // socket关闭事件
+   	   	      socket.onclose = function(event) {	
+   	   	    	
+   	   	  		if (flagclose) {
+   	   	  			alert(JSON.stringify(event));
+ 	   				heartCheck.start();
+				}
+   	   	      }; 
+   	   	      
+   	   	   socket.onerror = function(){
+   	   			
+   	   		   if (flagclose) {
+   	   				alert("error");
+   	   			   heartCheck.start();
+				}
+   	   			
+   	   	   };
+		}
+   	 	init(); //启动组件
+   	    
+   	 
+   	   //关闭socket
+   	      //socket.close()
+   	$("#close").click(function(){
+   		flagclose = false ; //手动关闭设置为false
+   	 $("#sheuser").text(""); //清除对方的id
+   		socket.close();
+   		var useridis =  $("#myuser").text();
+   		getSelectData('${ctxPath}/demo/removeGame' , {'userId':useridis} , 'GET' );
+   	});
+   	    
+   	 
+   	 //发起匹配队友的请求
+   	 var matedate = getSelectData('${ctxPath}/demo/mateuser' , {'userId':'${userId}'} , 'GET' );
+   	 if (matedate.star) { 
+		//隐藏等待图标
+		$(".londing").hide();
+		//发送消息给对方 , 要区分是匹配的消息
+		var sendobj = {};
+		sendobj.falg = true ; //这是 匹配的消息
+		sendobj.teamid = '${userId}'; //告诉对方谁是队友
+		//sendobj.userId = matedate.sheuser; // 发送给谁(也就是我现在匹配到的那个人)
+		var sendmassage = JSON.stringify(sendobj); 
+		getSelectData('${ctxPath}/message/TestWS' , {'userId':matedate.sheuser , 'message':sendmassage}  , 'POST');//发送消息
+		//需要将匹配好的userid放上去
+		$("#sheuser").html(matedate.sheuser);
+		
+	}
+   	 
+   	 
+ 
+   
+    
+  	 function selectkey (flag , selkey) { //在这里发送用户答题消息
+  		//一旦匹配成功了,那么我就可以进行答题了,需要发送给谁
+  		var senduserid = $("#sheuser").text();
+    	 	//得分200分
+  		var sendobj = {};
+  		sendobj.select = true;
+  		sendobj.sum = (flag == 'true')?'200':'0';
+  		sendobj.selkey = selkey; //用户的选项
+  		sendobj.senduserid = $("#myuser").text();
+  		//发送消息给对方
+  		getSelectData('${ctxPath}/message/TestWS' , {'userId':senduserid , 'message':JSON.stringify(sendobj)}  , 'POST');//发送消息
+  	}
+	
+  	 
+   	 function getSelectData(selectUrl, param , method) {
+         var mydata;
+         $.ajax({
+             type: method,
+             async: false,
+             url: selectUrl,
+             data: param,
+             contentType: "application/x-www-form-urlencoded; charset=utf-8",
+             success: function (data) {
+                 mydata = data;
+             },
+             dataType: "json"
+         });
+         return mydata;
+     }
+   	 
+   	  var heartCheck = {
+   		  timeout: 1000,
+   		  timeoutObj: null,
+   		  reset: function(){
+   		      clearTimeout(this.timeoutObj);
+   		  },
+   		  start: function(){
+   		      this.timeoutObj = setTimeout(function(){
+   		   		socket = new WebSocket(wsurl);
+   		   		init();
+   		      }, this.timeout)
+   		  },
+   		};   
+	</script>
+	
+
+</html>

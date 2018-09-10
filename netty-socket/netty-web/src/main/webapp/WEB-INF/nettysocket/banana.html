@@ -141,9 +141,9 @@ $(document).ready(function() {
 	        alert("请输入您的聊天信息");
 		    return;
 	    }
-	    getSelectData('localhost:8080/netty-web/message/nettymessage' , {"userId":userId , "message":message})
+	   // getSelectData('localhost:8080/netty-web/message/nettymessage' , {"userId":userId , "message":message})
 		// 发送聊天消息
-		//send(JSON.stringify({"requestId":uuid, "serviceId":1002, "name":nameOnline, "message":message}));
+		send(JSON.stringify({"requestId":uuid, "serviceId":1002, "name":nameOnline, "message":message}));
 		$("#messageInput").val("");
 	});
 	

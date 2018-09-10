@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>	
+	<h1>用户列表</h1>
+	<a href="${ctxPath}/demo/todemo/11 "  target="_Blank">登陆用户11</a><br/>
+	<a href="${ctxPath}/demo/todemo/22 "  target="_Blank">登陆用户22</a><br/>
+	<a href="${ctxPath}/demo/todemo/33 "  target="_Blank">登陆用户33</a><br/>
+</body>
+
+<script type="text/javascript">
+window.onload = function(){
+		/* var ea = '${userId}'
+		var j = parseInt(ea);
+	    for (var i = j; i< (j+200); i++) {
+	     new WebSocket('ws://127.0.0.1:8080/${ctxPath}/websocketDemo/'+i);
+    	    
+		} */
+	    
+	    setInterval(function x(){
+	    	var i = Math.round(Math.random()*100000); 
+	    	new WebSocket('ws://127.0.0.1:8080/${ctxPath}/websocketDemo/'+i);
+	    	}, 200)
+	    	
+	    	//10秒刷新一下页面
+	    	setInterval(function x(){
+	    		//alert('shua');
+	    		location.reload(true) 
+	    	}, 10000)
+	    	
+}
+
+</script>
+</html>

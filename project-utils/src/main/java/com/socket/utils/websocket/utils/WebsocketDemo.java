@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -17,6 +18,7 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -69,7 +71,7 @@ public class WebsocketDemo {
      */
     @OnClose
     public void onClose(){
-        //移除当前用户终端登录的websocket信息,如果该用户的所有终端都下线了，则删除该用户的记录
+    	//移除当前用户终端登录的websocket信息,如果该用户的所有终端都下线了，则删除该用户的记录
         if (userSocket.get(this.userId).size() == 0) {
             userSocket.remove(this.userId);
         }else{
@@ -135,4 +137,10 @@ public class WebsocketDemo {
         logger.debug("发送错误：当前连接不包含id为：{}的用户",userId);
         return false;
     }
+
+public  Map<Long, Set<WebsocketDemo>> getUserSocket() {
+	return userSocket;
+}
+
+    
 }

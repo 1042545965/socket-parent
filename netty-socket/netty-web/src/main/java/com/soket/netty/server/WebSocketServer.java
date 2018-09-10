@@ -145,8 +145,9 @@ public class WebSocketServer extends AfterSpringBegin{
     }*/
     
 	public void bulid(int port) throws Exception{
-
+		//boss线程监听端口和客户端的连接
 //		EventLoopGroup bossGroup = new NioEventLoopGroup();
+		//worker线程负责处理客户端的读写
 //		EventLoopGroup workerGroup = new NioEventLoopGroup();
 		try {
 			ServerBootstrap b = new ServerBootstrap();

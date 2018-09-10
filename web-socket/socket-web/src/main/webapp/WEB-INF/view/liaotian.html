@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <link href="${ctxPath}/res/css/liaotian.css" rel="stylesheet">
+     <link href="${ctxPath}/res/css/liaotian.css" rel="stylesheet">
     <script type="text/javascript"> 
    
     
@@ -15,7 +15,7 @@
         	
         	 var Words = document.getElementById("words");
         	    
-        	    var socket = new WebSocket('ws://127.0.0.1/${ctxPath}/websocketDemo/${userId}'); 
+        	    var socket = new WebSocket('ws://127.0.0.1:8080/${ctxPath}/websocketDemo/${userId}'); 
         	    //创建Socket 
         	    socket.onopen = function(event) { 
 
@@ -99,5 +99,5 @@
         </div>
     </div>
 </body>
-<script type="text/javascript" src="${ctxPath}/res/js/jquery.min.js"></script>
+<script type="text/javascript" src="${ctxPath}/res/js/jquery.min.js"></script> 
 </html>
